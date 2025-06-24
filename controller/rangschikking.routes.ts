@@ -31,14 +31,14 @@ import rangschikkingService from '../service/rangschikking.service';
  * @swagger
  * /rangschikking:
  *   get:
- *     summary: Get ranking for a team (ploeg).
+ *     summary: Get ranking for a team (reeks).
  *     parameters:
  *       - in: query
- *         name: ploeg
+ *         name: reeks
  *         schema:
  *           type: string
  *         required: true
- *         description: Team code
+ *         description: Reeks code (required)
  *       - in: query
  *         name: stamnummer
  *         schema:
@@ -52,7 +52,7 @@ import rangschikkingService from '../service/rangschikking.service';
  *             schema:
  *               $ref: '#/components/schemas/RangschikkingResponse'
  *       400:
- *         description: Missing ploeg parameter
+ *         description: Missing reeks parameter
  *         content:
  *           application/json:
  *             schema:
