@@ -45,7 +45,7 @@ app.use('/wedstrijden', wedstrijdRouter);
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
     if (err.name === 'UnauthorizedError') {
         res.status(401).json({ status: 'unauthorized', message: err.message });
-    } else if (err.name === 'TeamTrackrsError') {
+    } else if (err.name === 'FitHamError') {
         res.status(400).json({ status: 'domain error', message: err.message });
     } else {
         res.status(400).json({ status: 'application error', message: err.message });
@@ -53,5 +53,5 @@ app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
 });
 
 app.listen(port, () => {
-    console.log(`FitHam's API is running on port ${port}.`);
+    console.log(`FitHam's API is running.`);
 });
