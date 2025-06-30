@@ -72,7 +72,8 @@ rangschikkingRouter.get('/', async (req: Request, res: Response, next: NextFunct
       return res.status(400).json({ success: false, error: 'Reeks parameter is vereist' });
     }
     const stamnummer = req.query.stamnummer as string | undefined;
-    const data = await rangschikkingService.getRangschikking(reeks, stamnummer);
+    const ploegnaam = req.query.ploegnaam as string | undefined;
+    const data = await rangschikkingService.getRangschikking(reeks, stamnummer, ploegnaam);
     res.status(200).json({ success: true, data });
   } catch (error) {
     next(error);

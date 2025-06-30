@@ -6,6 +6,7 @@ import swaggerJSDoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
 import helmet from 'helmet';
 import { wedstrijdRouter } from './controller/wedstrijd.routes';
+import { rangschikkingRouter } from './controller/rangschikking.routes';
 
 dotenv.config();
 const app = express();
@@ -41,6 +42,7 @@ const swaggerOpts = {
 const swaggerSpec = swaggerJSDoc(swaggerOpts);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.use('/wedstrijden', wedstrijdRouter);
+app.use('/rangschikking', rangschikkingRouter);
 
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
     if (err.name === 'UnauthorizedError') {
