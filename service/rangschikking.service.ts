@@ -45,6 +45,14 @@ const getRangschikking = async (
     }
   }
 
+  // Handle special recreational teams - these might need local XML files
+  const specialTeams = ['vrodis', 'gwwb', 'dovros', 'meulstee'];
+  if (specialTeams.includes(fullReeksnr.toLowerCase())) {
+    // For now, return empty array as we don't have the local XML files implemented
+    console.log(`[Rangschikking] Special team '${fullReeksnr}' detected - local XML file needed`);
+    return [];
+  }
+
   let data: any;
   console.log(`[Rangschikking] Fetching for stamnummer: ${stamnummer}, reeksnr: ${fullReeksnr}`);
   data = await volleyAdminRepo.getRangschikking(stamnummer, fullReeksnr);
@@ -52,14 +60,33 @@ const getRangschikking = async (
 
   if (!data?.rangschikking?.rij && !data?.ploegen?.ploeg) return [];
   const rows = data.rangschikking?.rij || data.ploegen?.ploeg || [];
-  return rows.map((item: any) => {
+  
+  return rows.map((item: any, index: number) => {
     const ploegnaam = item.ploegnaam?.[0] || item.naam?.[0] || '';
+    const isVCM = checkIfVCM(ploegnaam);
+    
     return {
-      volgorde: item.volgorde?.[0] || item.plaats?.[0] || '',
+      volgorde: item.volgorde?.[0] || item.plaats?.[0] || (index + 1).toString(),
       ploegnaam,
-      puntentotaal: item.puntentotaal?.[0] || item.punten?.[0] || ''
+      puntentotaal: item.puntentotaal?.[0] || item.punten?.[0] || '0',
+      isVCM
     };
   });
 };
+
+// Helper function to check if a team is VCM based on team name
+function checkIfVCM(ploegnaam: string): boolean {
+  const ploegnaanLower = ploegnaam.toLowerCase();
+  
+  // Check for VCM-related team names (based on PHP logic)
+  return ploegnaanLower.includes('dovro') || 
+         ploegnaanLower.includes('molenstede') ||
+         ploegnaanLower.includes('vrodis') || 
+         ploegnaanLower.includes('gisteren waren') ||
+         ploegnaanLower.includes('gwwb') ||
+         ploegnaanLower.includes('meulstee') ||
+         ploegnaanLower.includes('vcm') ||
+         ploegnaanLower.includes('ham'); // VCM Ham
+}
 
 export default { getRangschikking };

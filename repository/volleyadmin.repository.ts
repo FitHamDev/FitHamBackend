@@ -13,11 +13,12 @@ export class VolleyAdminRepository {
     return parseStringPromise(response.data as string);
   }
 
-  async getRangschikking(ploeg: string, stamnummer: string): Promise<any> {
+  async getRangschikking(stamnummer: string, reeks: string): Promise<any> {
     const response = await axios.get(
-      `${this.baseUrl}/rangschikking_xml.php?stamnummer=${stamnummer}&reeks=${ploeg}`,
+      `${this.baseUrl}/rangschikking_xml.php?stamnummer=${stamnummer}&reeks=${reeks}`,
       { timeout: 10000 }
     );
+    console.log('VolleyAdmin XML rangschikking response:', response.data);
     return parseStringPromise(response.data as string);
   }
 }
